@@ -1,5 +1,6 @@
 package com.microservices.store.product.mapper;
 
+import com.microservices.store.product.dto.CategoryCreateDto;
 import com.microservices.store.product.dto.CategoryDto;
 import com.microservices.store.product.entity.Category;
 import org.junit.jupiter.api.Test;
@@ -10,7 +11,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
-@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test.yml")
 class CategoryMapperTest {
@@ -41,4 +41,14 @@ class CategoryMapperTest {
         assertEquals(dto.getId(), entity.getId());
         assertEquals(dto.getName(), entity.getName());
     }
+    @Test
+    void whenDtoCreateToEntity_ThenReturnEntity() {
+        CategoryCreateDto dto = new CategoryCreateDto().builder()
+                .name("Categoria A")
+                .build();
+        Category entity = mapper.dtoCreateToEntity(dto);
+        assertEquals(dto.getName(), entity.getName());
+    }
+
+
 }

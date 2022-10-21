@@ -1,6 +1,7 @@
 package com.microservices.store.product.mapper;
 
 
+import com.microservices.store.product.dto.CategoryCreateDto;
 import com.microservices.store.product.dto.CategoryDto;
 import com.microservices.store.product.entity.Category;
 import com.microservices.store.product.entity.Product;
@@ -20,6 +21,10 @@ public class CategoryMapper {
     }
 
     public Category dtoToEntity(CategoryDto dto){
+        Category entity = mapper.map(dto, Category.class);
+        return entity;
+    }
+    public Category dtoCreateToEntity(CategoryCreateDto dto){
         Category entity = mapper.map(dto, Category.class);
         return entity;
     }
