@@ -2,11 +2,13 @@ package com.microservices.store.product.service.impl;
 
 import com.microservices.store.product.dto.ProductCreateDto;
 import com.microservices.store.product.dto.ProductDto;
+import com.microservices.store.product.entity.Category;
 import com.microservices.store.product.entity.Product;
 import com.microservices.store.product.exceptions.NotFoundException;
 import com.microservices.store.product.mapper.ProductMapper;
 import com.microservices.store.product.repository.ProductRepository;
 import com.microservices.store.product.service.ProductService;
+import com.microservices.store.product.utils.Status;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,8 @@ public class ProductServiceImp implements ProductService {
     @Override
     public ProductDto save(ProductCreateDto productCreateDto) {
         Product product = mapper.dtoCreateToEntity(productCreateDto);
+        product.setCategory(new Category().builder().id(productCreateDto.getCategoryId()).build());
+        product.setStatus(Status.CREATED);
         ProductDto dto = mapper.entityToDto(repository.save(product));
         return dto;
     }
@@ -31,6 +35,7 @@ public class ProductServiceImp implements ProductService {
     public ProductDto show(Long id) {
         Product product = repository.findById(id).orElseThrow(() -> new NotFoundException("Product id (" + id + ")"));
         ProductDto dto = mapper.entityToDto(product);
+
         return dto;
     }
 
@@ -42,9 +47,10 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public ProductDto update(Long id, ProductCreateDto categoryCreateDto) {
+    public ProductDto update(Long id, ProductCreateDto productCreateDto) {
         Product product = repository.findById(id).orElseThrow(() -> new NotFoundException("Product id (" + id + ")"));
-        product.setName(categoryCreateDto.getName());
+        product.setName(productCreateDto.getName());
+        product.setCategory(new Category().builder().id(productCreateDto.getCategoryId()).build());
         ProductDto dto = mapper.entityToDto(product);
         return dto;
     }
