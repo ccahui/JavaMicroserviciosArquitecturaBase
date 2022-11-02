@@ -48,14 +48,31 @@ class CategoryServiceImpTest {
         CategoryCreateDto dtoCreate = new CategoryCreateDto("Category A");
 
         when(mapper.dtoCreateToEntity(dtoCreate)).thenReturn(entity);
-        when(repository.save(entity)).thenReturn(entity);
+        when(repository.save(any(Category.class))).thenReturn(entity);
         when(mapper.entityToDto(entity)).thenReturn(dto);
 
         CategoryDto dtoService = service.save(dtoCreate);
 
         verify(mapper).dtoCreateToEntity(dtoCreate);
-        verify(repository).save(entity);
+        verify(repository).save(any(Category.class));
         verify(mapper).entityToDto(entity);
+        assertEquals(dtoService.getName(), dto.getName());
+    }
+    @Test
+    void whenUpdateSuccess_thenDto() {
+        CategoryCreateDto dtoCreate = new CategoryCreateDto("Category C");
+
+        Long id = entity.getId();
+        when(repository.findById(id)).thenReturn(Optional.of(entity));
+        when(mapper.entityToDto(entity)).thenReturn(dto);
+        when(repository.save(any(Category.class))).thenReturn(entity);
+        CategoryDto dtoService = service.update(entity.getId(), dtoCreate);
+
+
+        verify(repository).save(any(Category.class));
+        verify(mapper).entityToDto(entity);
+
+
         assertEquals(dtoService.getName(), dto.getName());
     }
 

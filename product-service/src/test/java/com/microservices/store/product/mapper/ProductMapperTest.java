@@ -1,6 +1,7 @@
 package com.microservices.store.product.mapper;
 
 import com.microservices.store.product.dto.CategoryDto;
+import com.microservices.store.product.dto.ProductCreateDto;
 import com.microservices.store.product.dto.ProductDto;
 import com.microservices.store.product.entity.Category;
 import com.microservices.store.product.entity.Product;
@@ -53,6 +54,27 @@ class ProductMapperTest {
         assertEquals(entity.getName(), dto.getName());
         assertEquals(entity.getDescription(), dto.getDescription());
         assertEquals(entity.getCreateAt(), dto.getCreateAt());
+
+    }
+    @Test
+    void whenDtoCreateToEntity_ThenReturnEntity() {
+
+        ProductCreateDto dto = new ProductCreateDto().builder()
+                .name("Categoria A")
+                .description("Descripcion")
+                .price(4D)
+                .stock(5D)
+                .categoryId(2L)
+                .build();
+        Product entity = mapper.dtoCreateToEntity(dto);
+
+
+        assertEquals(entity.getName(), dto.getName());
+        assertEquals(entity.getDescription(), dto.getDescription());
+        assertEquals(entity.getPrice(), dto.getPrice());
+        assertEquals(entity.getStock(), dto.getStock());
+        assertEquals(entity.getCategory().getId(), dto.getCategoryId());
+
 
     }
 }

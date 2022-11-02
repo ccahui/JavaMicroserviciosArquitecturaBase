@@ -25,7 +25,6 @@ public class ProductServiceImp implements ProductService {
     @Override
     public ProductDto save(ProductCreateDto productCreateDto) {
         Product product = mapper.dtoCreateToEntity(productCreateDto);
-        product.setCategory(new Category().builder().id(productCreateDto.getCategoryId()).build());
         product.setStatus(Status.CREATED);
         ProductDto dto = mapper.entityToDto(repository.save(product));
         return dto;
