@@ -2,7 +2,9 @@ version: '3.7'
 
 services:
   product-service:
-    build: ./
+    build: 
+        context: ./product-service
+        dockerfile: Dockerfile
     image: product-service-app
     ports:
       - 8091:8091
