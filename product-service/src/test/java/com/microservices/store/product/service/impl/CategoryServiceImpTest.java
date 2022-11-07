@@ -3,6 +3,7 @@ package com.microservices.store.product.service.impl;
 import com.microservices.store.product.dto.CategoryCreateDto;
 import com.microservices.store.product.dto.CategoryDto;
 import com.microservices.store.product.entity.Category;
+import com.microservices.store.product.exceptions.ConstraintViolationException;
 import com.microservices.store.product.exceptions.NotFoundException;
 import com.microservices.store.product.mapper.CategoryMapper;
 import com.microservices.store.product.repository.CategoryRepository;
@@ -107,6 +108,25 @@ class CategoryServiceImpTest {
 
         verify(repository).findAll();
         verify(mapper).entityToDto(entity);
+
+    }
+
+    @Test
+    void whenDeleteCategoryWithoutProducts_thenSuccess() {
+        when(repository.hasProducts(entity.getId())).thenReturn(false);
+
+        service.delete(entity.getId());
+
+        verify(repository).hasProducts(entity.getId());
+        verify(repository).deleteById(entity.getId());
+
+    }
+    @Test
+    void whenDeleteCategoryWithProducts_thenException() {
+        when(repository.hasProducts(entity.getId())).thenReturn(true);
+        Assertions.assertThrows(ConstraintViolationException.class, () -> service.delete(entity.getId()));
+
+        verify(repository).hasProducts(entity.getId());
 
     }
 

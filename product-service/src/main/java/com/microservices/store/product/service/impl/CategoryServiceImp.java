@@ -3,9 +3,11 @@ package com.microservices.store.product.service.impl;
 import com.microservices.store.product.dto.CategoryCreateDto;
 import com.microservices.store.product.dto.CategoryDto;
 import com.microservices.store.product.entity.Category;
+import com.microservices.store.product.exceptions.ConstraintViolationException;
 import com.microservices.store.product.exceptions.NotFoundException;
 import com.microservices.store.product.mapper.CategoryMapper;
 import com.microservices.store.product.repository.CategoryRepository;
+import com.microservices.store.product.repository.ProductRepository;
 import com.microservices.store.product.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 public class CategoryServiceImp implements CategoryService {
 
     private final CategoryRepository repository;
+    private final ProductRepository repositoryProduct;
     private final CategoryMapper mapper;
 
     @Override
@@ -52,6 +55,13 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     public void delete(Long id) {
+        assertProductsIsEmpty(id);
         repository.deleteById(id);
+    }
+
+    public void assertProductsIsEmpty(Long id) {
+        if(repository.hasProducts(id)){
+          throw new ConstraintViolationException("There are products with this category");
+        }
     }
 }

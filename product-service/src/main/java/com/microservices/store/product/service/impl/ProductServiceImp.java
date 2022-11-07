@@ -50,6 +50,7 @@ public class ProductServiceImp implements ProductService {
         Product product = repository.findById(id).orElseThrow(() -> new NotFoundException("Product id (" + id + ")"));
         product.setName(productCreateDto.getName());
         product.setCategory(new Category().builder().id(productCreateDto.getCategoryId()).build());
+        repository.save(product);
         ProductDto dto = mapper.entityToDto(product);
         return dto;
     }
