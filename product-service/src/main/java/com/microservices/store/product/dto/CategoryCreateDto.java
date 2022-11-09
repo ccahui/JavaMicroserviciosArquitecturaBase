@@ -1,5 +1,6 @@
 package com.microservices.store.product.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,5 +14,6 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class CategoryCreateDto {
     @NotBlank
+    @Schema(example = "Category A")
     private String name;
 }

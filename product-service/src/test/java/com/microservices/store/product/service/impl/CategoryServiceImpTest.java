@@ -113,22 +113,41 @@ class CategoryServiceImpTest {
 
     @Test
     void whenDeleteCategoryWithoutProducts_thenSuccess() {
+        when(repository.findById(entity.getId())).thenReturn(Optional.of(entity));
         when(repository.hasProducts(entity.getId())).thenReturn(false);
-
         service.delete(entity.getId());
 
+        verify(repository).findById(entity.getId());
         verify(repository).hasProducts(entity.getId());
         verify(repository).deleteById(entity.getId());
 
     }
     @Test
     void whenDeleteCategoryWithProducts_thenException() {
+        when(repository.findById(entity.getId())).thenReturn(Optional.of(entity));
         when(repository.hasProducts(entity.getId())).thenReturn(true);
-        Assertions.assertThrows(ConstraintViolationException.class, () -> service.delete(entity.getId()));
 
+        ConstraintViolationException exception = Assertions.assertThrows(ConstraintViolationException.class, () -> service.delete(entity.getId()));
+        ConstraintViolationException expectMessage = new ConstraintViolationException("There are products with this category");
+
+        verify(repository).findById(entity.getId());
         verify(repository).hasProducts(entity.getId());
+        assertEquals(exception.getMessage(), expectMessage.getMessage());
 
     }
 
+    @Test
+    void whenDeleteCategoryInvalidId_thenException() {
+        Long idInvalid = 9999L;
+        when(repository.findById(idInvalid)).thenReturn(Optional.empty());
+
+        NotFoundException exception = Assertions.assertThrows(NotFoundException.class, () -> service.delete(idInvalid));
+        NotFoundException expectMessage = new NotFoundException("Category not found: "+idInvalid);
+
+        verify(repository).findById(idInvalid);
+        assertEquals(exception.getMessage(), expectMessage.getMessage());
+
+
+    }
 
 }

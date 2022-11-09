@@ -57,6 +57,10 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public void delete(Long id) {
+        assertProductExists(id);
         repository.deleteById(id);
+    }
+    public void assertProductExists(Long id) {
+        repository.findById(id).orElseThrow(()->new NotFoundException("Product not found: "+id));
     }
 }

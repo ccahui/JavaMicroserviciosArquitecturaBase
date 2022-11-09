@@ -55,6 +55,7 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     public void delete(Long id) {
+        assertCategoryExists(id);
         assertProductsIsEmpty(id);
         repository.deleteById(id);
     }
@@ -63,5 +64,8 @@ public class CategoryServiceImp implements CategoryService {
         if(repository.hasProducts(id)){
           throw new ConstraintViolationException("There are products with this category");
         }
+    }
+    public void assertCategoryExists(Long id) {
+        repository.findById(id).orElseThrow(()->new NotFoundException("Category not found: "+id));
     }
 }
