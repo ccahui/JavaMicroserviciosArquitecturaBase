@@ -4,17 +4,18 @@ import com.microservices.store.customer.entity.Customer;
 import com.microservices.store.customer.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/customers")
+@RequestMapping("/api"+CustomerController.CUSTOMER)
 @RequiredArgsConstructor
 public class CustomerController {
 
-
+    public static final String CUSTOMER = "/customers";
     private final CustomerService customerService;
 
 
@@ -30,6 +31,7 @@ public class CustomerController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Customer save(@RequestBody Customer customer) {
         log.info("Creating Customer : {}", customer);
         return customerService.save(customer);
@@ -42,6 +44,7 @@ public class CustomerController {
     }
 
     @DeleteMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCustomer(@PathVariable Long id) {
         log.info("Fetching & Deleting Customer with id {}", id);
         customerService.delete(id);

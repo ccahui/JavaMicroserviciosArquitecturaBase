@@ -1,6 +1,7 @@
 package com.microservices.store.customer.service.impl;
 
 import com.microservices.store.customer.entity.Customer;
+import com.microservices.store.customer.exceptions.NotFoundException;
 import com.microservices.store.customer.repository.CustomerRepository;
 import com.microservices.store.customer.service.CustomerService;
 import lombok.RequiredArgsConstructor;
@@ -45,11 +46,12 @@ public class CustomerServiceImpl  implements CustomerService {
 
     @Override
     public void delete(Long id) {
-        customerRepository.findById(id).ifPresent((e)->customerRepository.deleteById(id));
+        customerRepository.findById(id).orElseThrow(()->new NotFoundException("Customer not Found "+id));
+        customerRepository.deleteById(id);
     }
 
     @Override
     public Customer show(Long id) {
-        return  customerRepository.findById(id).orElse(new Customer());
+        return  customerRepository.findById(id).orElseThrow(()->new NotFoundException("Customer not Found: "+id));
     }
 }
