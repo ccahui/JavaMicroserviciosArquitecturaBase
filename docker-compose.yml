@@ -5,6 +5,6 @@ services:
     build: 
         context: ./product-service
         dockerfile: Dockerfile
-    image: product-service-app
+    image: product-service-app:0.1
     ports:
       - 8091:8091
