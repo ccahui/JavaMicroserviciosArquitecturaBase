@@ -8,3 +8,10 @@ services:
     image: product-service-app:0.1
     ports:
       - 8091:8091
+  customer-service:
+    build:
+      context: ./customer-service
+      dockerfile: Dockerfile
+    image: customer-service-app
+    ports:
+      - 8092:8092
