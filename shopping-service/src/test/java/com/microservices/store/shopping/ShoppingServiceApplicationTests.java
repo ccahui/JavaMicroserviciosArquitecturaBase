@@ -1,4 +1,4 @@
-package com.microservices.store.shoppingservice;
+package com.microservices.store.shopping;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

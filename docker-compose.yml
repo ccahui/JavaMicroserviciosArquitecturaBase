@@ -2,16 +2,23 @@ version: '3.7'
 
 services:
   product-service:
-    build: 
+    build:
         context: ./product-service
         dockerfile: Dockerfile
-    image: product-service-app:0.1
+    image: product-service-app:0.2
     ports:
       - 8091:8091
   customer-service:
     build:
       context: ./customer-service
       dockerfile: Dockerfile
-    image: customer-service-app
+    image: customer-service-app:0.2
     ports:
       - 8092:8092
+  shopping-service:
+    build:
+      context: ./shopping-service
+      dockerfile: Dockerfile
+    image: shopping-service-app:0.1
+    ports:
+      - 8093:8093
