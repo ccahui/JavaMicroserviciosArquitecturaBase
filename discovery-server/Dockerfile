@@ -11,9 +11,9 @@ RUN mvn -f pom.xml clean package install
 
 FROM ${RUNTIME_IMAGE}
 ENV ARTIFACT_NAME=*.jar
-ENV PROFILE=docker
+ENV PROFILE=dev
 
-EXPOSE 8093
+EXPOSE 8761
 
 
 COPY --from=dependencies /target/$ARTIFACT_NAME /app/app.jar

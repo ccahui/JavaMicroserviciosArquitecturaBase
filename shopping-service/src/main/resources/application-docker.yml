@@ -1,8 +1,8 @@
 server:
-  port: 8091
+  port: 8093
 spring:
   application:
-    name: product-service
+    name: shopping-service
   datasource:
     url: jdbc:h2:mem:productDB;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     driverClassName: org.h2.Driver
@@ -18,4 +18,4 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://eureka_user:eureka_password@localhost:8761/eureka
+      defaultZone: http://eureka_user:eureka_password@discovery-server:8761/eureka
