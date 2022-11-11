@@ -8,7 +8,7 @@ import java.util.List;
 public interface ProductService {
     ProductDto save(ProductCreateDto productCreateDto);
     ProductDto show(Long id);
-    List<ProductDto> all();
+    List<ProductDto> all(List<Long> idsProduct);
     List<InventoryDto> findByIds(List<Long> idsProduct);
     ProductDto update(Long id, ProductCreateDto productCreateDto);
     void delete(Long id);

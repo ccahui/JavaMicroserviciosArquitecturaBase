@@ -46,9 +46,15 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public List<ProductDto> all() {
-        List<Product> produdcts = repository.findAll();
-        List<ProductDto> dtos = produdcts.stream().map(mapper::entityToDto).collect(Collectors.toList());
+    public List<ProductDto> all(List<Long>ids) {
+        List<Product> products;
+        if(ids == null) {
+            products = repository.findAll();
+        }else {
+            products = repository.findAllById(ids);
+        }
+
+        List<ProductDto> dtos = products.stream().map(mapper::entityToDto).collect(Collectors.toList());
         return dtos;
     }
 

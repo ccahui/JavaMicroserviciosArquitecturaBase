@@ -1,13 +1,13 @@
 package com.microservices.store.shopping.exceptions;
 
 
-public class NotFoundException extends RuntimeException {
+public class InventoryStockException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
-    public static final String DESCRIPTION = "Not Found Exception (404)";
+    public static final String DESCRIPTION = "Product is not in stock";
 
-    public NotFoundException(String detail) {
+    public InventoryStockException(String detail) {
         super(DESCRIPTION + ". " + detail);
     }
 

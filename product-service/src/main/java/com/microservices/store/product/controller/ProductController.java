@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -19,8 +20,8 @@ public class ProductController {
     private final ProductService service;
 
     @GetMapping
-    public List<ProductDto> all() {
-        return service.all();
+    public List<ProductDto> all(@RequestParam(required = false) List<Long> ids) {
+        return service.all(ids);
     }
 
     @GetMapping(value="/inventory")

@@ -1,5 +1,6 @@
 package com.microservices.store.shopping.entity;
 
+import com.microservices.store.shopping.client.dto.CustomerDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,8 +30,8 @@ public class Invoice {
     @Column(name = "create_at")
     @Temporal(TemporalType.DATE)
     private Date createAt;
-
-
+    @Transient
+    private CustomerDto customer;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "invoice_id")
     private List<InvoiceItem> items = new ArrayList<>();

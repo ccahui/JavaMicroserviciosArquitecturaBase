@@ -1,6 +1,8 @@
 package com.microservices.store.shopping.entity;
 
 
+import com.microservices.store.shopping.client.dto.CustomerDto;
+import com.microservices.store.shopping.client.dto.ProductDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,6 +28,8 @@ public class InvoiceItem {
     private Double subTotal;
 
 
+    @Transient
+    private ProductDto product;
     public Double getSubTotal() {
         if (this.price > 0 && this.quantity > 0) {
             return this.quantity * this.price;
