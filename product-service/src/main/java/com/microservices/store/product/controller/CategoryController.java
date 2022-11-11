@@ -53,4 +53,5 @@ public class CategoryController {
     public void delete(@Parameter(description="Category id", required = true, example="2", in = ParameterIn.PATH ) @PathVariable long id) {
         this.service.delete(id);
     }
+
 }

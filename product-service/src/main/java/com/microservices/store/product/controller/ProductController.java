@@ -1,5 +1,6 @@
 package com.microservices.store.product.controller;
 
+import com.microservices.store.product.dto.InventoryDto;
 import com.microservices.store.product.dto.ProductCreateDto;
 import com.microservices.store.product.dto.ProductDto;
 import com.microservices.store.product.service.ProductService;
@@ -20,6 +21,11 @@ public class ProductController {
     @GetMapping
     public List<ProductDto> all() {
         return service.all();
+    }
+
+    @GetMapping(value="/inventory")
+    public List<InventoryDto> isInStock(@RequestParam List<Long> ids) {
+        return service.findByIds(ids);
     }
 
     @GetMapping(value = {"/{id}"})
@@ -43,4 +49,7 @@ public class ProductController {
     public void delete(@PathVariable long id) {
         this.service.delete(id);
     }
+
+
+
 }

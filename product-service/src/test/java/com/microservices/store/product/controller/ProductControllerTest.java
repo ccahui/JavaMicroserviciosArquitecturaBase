@@ -19,9 +19,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
+import java.util.Arrays;
 import java.util.List;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -41,10 +45,15 @@ class ProductControllerTest {
     @Autowired
     private CategoryRepository repositoryCategory;
     private Category categoryA;
+    private Product productA;
+    private Product productB;
     @BeforeEach
     void dbInsertData() {
         categoryA = new Category().builder().name("Categoria A").build();
         repositoryCategory.save(categoryA);
+        productA = new Product().builder().name("Product A").price(25D).stock(10D).status(Status.CREATED).category(categoryA).build();
+        productB = new Product().builder().name("Product B").price(15D).stock(1D).status(Status.CREATED).category(categoryA).build();
+        repositoryProduct.saveAll(List.of(productA, productB));
     }
 
     @AfterEach
@@ -58,7 +67,14 @@ class ProductControllerTest {
     }
 
     @Test
-    void show() {
+    void testShowIsInStockSuccess() throws Exception {
+        List<String> idsValid = List.of(productA.getId().toString(), productB.getId().toString());
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.addAll("ids", idsValid);
+
+        this.mockMvc.perform(get(PATH+"/inventory").contentType(MediaType.APPLICATION_JSON).params(params))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test

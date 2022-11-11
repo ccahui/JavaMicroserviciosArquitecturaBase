@@ -28,6 +28,9 @@ public class ProductRepositoryTest {
     private Category categoryA;
     private Category categoryB;
     private Category categoryC;
+    Product productA;
+    Product productB ;
+    Product productC;
     @BeforeEach
     void dbInsertData() {
         categoryA = new Category().builder().name("Categoria A").build();
@@ -36,9 +39,9 @@ public class ProductRepositoryTest {
 
         repositoryCategory.saveAll(List.of(categoryA, categoryB, categoryC));
 
-        Product productA = new Product().builder().name("Product A").price(25D).stock(10D).status(Status.CREATED).category(categoryA).build();
-        Product productB = new Product().builder().name("Product B").price(15D).stock(1D).status(Status.CREATED).category(categoryA).build();
-        Product productC = new Product().builder().name("Product C").price(5D).stock(2D).status(Status.CREATED).category(categoryB).build();
+        productA = new Product().builder().name("Product A").price(25D).stock(10D).status(Status.CREATED).category(categoryA).build();
+        productB = new Product().builder().name("Product B").price(15D).stock(1D).status(Status.CREATED).category(categoryA).build();
+        productC = new Product().builder().name("Product C").price(5D).stock(2D).status(Status.CREATED).category(categoryB).build();
 
         repository.saveAll(List.of(productA, productB, productC));
     }
@@ -69,4 +72,36 @@ public class ProductRepositoryTest {
         assertEquals(filter.size(), 0);
     }
 
+    @Test
+    void whenFindWhereArrayIds_thenListWith2Product() {
+
+        List<Long> ids = List.of(productA.getId(), productB.getId());
+        List<Product> filter = repository.findAllById(ids);
+        assertEquals(filter.size(), 2);
+        assertEquals(filter.get(0), productA);
+        assertEquals(filter.get(1), productB);
+    }
+    @Test
+    void whenFindWhereArrayIdsNotValid_thenListEmpty() {
+        Long idInvalid = 9999L;
+        List<Long> ids = List.of(idInvalid);
+        List<Product> filter = repository.findAllById(ids);
+    }
+    @Test
+    void whenFindWhereArray2ValidAnd1IdsInvalid_thenList2Element() {
+        Long idInvalid = 9999L;
+        List<Long> ids = List.of(productA.getId(), productB.getId(), idInvalid);
+        List<Product> filter = repository.findAllById(ids);
+        assertEquals(filter.size(), 2);
+        assertEquals(filter.get(0), productA);
+        assertEquals(filter.get(1), productB);
+    }
+
+    @Test
+    void whenFindWhereArray2IdsValidRepeat_thenList1Element() {
+        Long idRepeat = productA.getId();
+        List<Long> ids = List.of(idRepeat, idRepeat );
+        List<Product> filter = repository.findAllById(ids);
+        assertEquals(1, filter.size());
+    }
 }

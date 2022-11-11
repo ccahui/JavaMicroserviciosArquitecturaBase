@@ -1,5 +1,6 @@
 package com.microservices.store.product.service.impl;
 
+import com.microservices.store.product.dto.InventoryDto;
 import com.microservices.store.product.dto.ProductCreateDto;
 import com.microservices.store.product.dto.ProductDto;
 import com.microservices.store.product.entity.Category;
@@ -37,6 +38,12 @@ public class ProductServiceImp implements ProductService {
 
         return dto;
     }
+    @Override
+    public List<InventoryDto> findByIds(List<Long>ids) {
+        List<Product> products = repository.findAllById(ids);
+        List<InventoryDto> dtos = products.stream().map(mapper::entityToInventoryDto).collect(Collectors.toList());
+        return dtos;
+    }
 
     @Override
     public List<ProductDto> all() {
@@ -49,6 +56,7 @@ public class ProductServiceImp implements ProductService {
     public ProductDto update(Long id, ProductCreateDto productCreateDto) {
         Product product = repository.findById(id).orElseThrow(() -> new NotFoundException("Product id (" + id + ")"));
         product.setName(productCreateDto.getName());
+        product.setStock(productCreateDto.getStock());
         product.setCategory(new Category().builder().id(productCreateDto.getCategoryId()).build());
         repository.save(product);
         ProductDto dto = mapper.entityToDto(product);
