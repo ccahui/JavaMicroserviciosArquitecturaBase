@@ -1,0 +1,36 @@
+server:
+  port: 8093
+spring:
+  application:
+    name: gateway-server
+  cloud:
+    gateway:
+      routes:
+        - id: product-service
+          uri: lb://product-service
+          predicates:
+            - Path=/app-product/**
+          filters:
+            - StripPrefix=1
+        - id: customer-service
+          uri: lb://customer-service
+          predicates:
+            - Path=/app-customer/**
+          filters:
+            - StripPrefix=1
+        - id: shopping-service
+          uri: lb://app-shopping
+          predicates:
+            - Path=/app-shopping/**
+          filters:
+            - StripPrefix=1
+        - id: discovery-server
+          uri: lb://discovery-server
+          predicates:
+            - Path=/eureka/**
+          filters:
+            - StripPrefix=1
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka_user:eureka_password@discovery-server:8761/eureka
