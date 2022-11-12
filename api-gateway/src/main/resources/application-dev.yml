@@ -16,6 +16,20 @@ spring:
           - Path=/app-customer/**
           filters:
           - StripPrefix=1
+        - id: product-service
+          #uri: http://localhost:8091
+          uri: lb://product-service
+          predicates:
+            - Path=/app-product/**
+          filters:
+            - StripPrefix=1
+        - id: shopping-service
+          #uri: http://localhost:8093
+          uri: lb://shopping-service
+          predicates:
+            - Path=/app-shopping/**
+          filters:
+            - StripPrefix=1
 eureka:
   client:
     serviceUrl:
