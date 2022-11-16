@@ -1,7 +1,9 @@
 package com.microservices.store.product.service;
 
 
-import com.microservices.store.product.dto.*;
+import com.microservices.store.product.dto.InventoryDto;
+import com.microservices.store.product.dto.ProductCreateDto;
+import com.microservices.store.product.dto.ProductDto;
 
 import java.util.List;
 

@@ -1,21 +1,17 @@
 package com.microservices.store.product.mapper;
 
-import com.microservices.store.product.dto.CategoryDto;
 import com.microservices.store.product.dto.ProductCreateDto;
 import com.microservices.store.product.dto.ProductDto;
 import com.microservices.store.product.entity.Category;
 import com.microservices.store.product.entity.Product;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.time.LocalDate;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @TestPropertySource(locations = "classpath:test.yml")

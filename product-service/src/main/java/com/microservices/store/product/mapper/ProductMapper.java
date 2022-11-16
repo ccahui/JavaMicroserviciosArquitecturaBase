@@ -16,25 +16,21 @@ public class ProductMapper {
     private final ModelMapper mapper;
 
     public ProductDto entityToDto(Product entity) {
-        ProductDto dto = mapper.map(entity, ProductDto.class);
-        return dto;
+        return mapper.map(entity, ProductDto.class);
     }
 
     public Product dtoToEntity(ProductDto dto) {
-        Product entity = mapper.map(dto, Product.class);
-        return entity;
+        return mapper.map(dto, Product.class);
     }
 
     public Product dtoCreateToEntity(ProductCreateDto dto) {
-        Product entity = mapper.map(dto, Product.class);
-        return entity;
+        return mapper.map(dto, Product.class);
     }
 
     public InventoryDto entityToInventoryDto(Product entity) {
         boolean isInStock = entity.getStock() > 0;
-        InventoryDto dto = new InventoryDto().builder().id(entity.getId()).price(entity.getPrice())
+        return new InventoryDto().builder().id(entity.getId()).price(entity.getPrice())
                             .isInStock(isInStock).build();
-        return dto;
     }
 
 }

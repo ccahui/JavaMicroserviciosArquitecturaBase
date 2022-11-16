@@ -27,22 +27,18 @@ public class ProductServiceImp implements ProductService {
     public ProductDto save(ProductCreateDto productCreateDto) {
         Product product = mapper.dtoCreateToEntity(productCreateDto);
         product.setStatus(Status.CREATED);
-        ProductDto dto = mapper.entityToDto(repository.save(product));
-        return dto;
+        return mapper.entityToDto(repository.save(product));
     }
 
     @Override
     public ProductDto show(Long id) {
         Product product = repository.findById(id).orElseThrow(() -> new NotFoundException("Product id (" + id + ")"));
-        ProductDto dto = mapper.entityToDto(product);
-
-        return dto;
+        return mapper.entityToDto(product);
     }
     @Override
     public List<InventoryDto> findByIds(List<Long>ids) {
         List<Product> products = repository.findAllById(ids);
-        List<InventoryDto> dtos = products.stream().map(mapper::entityToInventoryDto).collect(Collectors.toList());
-        return dtos;
+        return products.stream().map(mapper::entityToInventoryDto).collect(Collectors.toList());
     }
 
     @Override
@@ -54,8 +50,7 @@ public class ProductServiceImp implements ProductService {
             products = repository.findAllById(ids);
         }
 
-        List<ProductDto> dtos = products.stream().map(mapper::entityToDto).collect(Collectors.toList());
-        return dtos;
+        return products.stream().map(mapper::entityToDto).collect(Collectors.toList());
     }
 
     @Override
@@ -65,8 +60,8 @@ public class ProductServiceImp implements ProductService {
         product.setStock(productCreateDto.getStock());
         product.setCategory(new Category().builder().id(productCreateDto.getCategoryId()).build());
         repository.save(product);
-        ProductDto dto = mapper.entityToDto(product);
-        return dto;
+
+        return mapper.entityToDto(product);
     }
 
     @Override

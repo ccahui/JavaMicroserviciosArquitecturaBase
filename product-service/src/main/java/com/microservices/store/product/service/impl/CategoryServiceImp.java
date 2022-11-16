@@ -26,22 +26,19 @@ public class CategoryServiceImp implements CategoryService {
     @Override
     public CategoryDto save(CategoryCreateDto categoryCreateDto) {
         Category category = mapper.dtoCreateToEntity(categoryCreateDto);
-        CategoryDto dto = mapper.entityToDto(repository.save(category));
-        return dto;
+        return mapper.entityToDto(repository.save(category));
     }
 
     @Override
     public CategoryDto show(Long id) {
         Category category = repository.findById(id).orElseThrow(() -> new NotFoundException("Category id (" + id + ")"));
-        CategoryDto dto = mapper.entityToDto(category);
-        return dto;
+        return mapper.entityToDto(category);
     }
 
     @Override
     public List<CategoryDto> all() {
         List<Category> categories = repository.findAll();
-        List<CategoryDto> dtos = categories.stream().map(mapper::entityToDto).collect(Collectors.toList());
-        return dtos;
+        return categories.stream().map(mapper::entityToDto).collect(Collectors.toList());
     }
 
     @Override
@@ -49,8 +46,7 @@ public class CategoryServiceImp implements CategoryService {
         Category category = repository.findById(id).orElseThrow(() -> new NotFoundException("Category id (" + id + ")"));
         category.setName(categoryCreateDto.getName());
         repository.save(category);
-        CategoryDto dto = mapper.entityToDto(category);
-        return dto;
+        return mapper.entityToDto(category);
     }
 
     @Override

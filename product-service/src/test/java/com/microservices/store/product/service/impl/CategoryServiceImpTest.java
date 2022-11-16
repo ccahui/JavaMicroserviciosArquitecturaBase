@@ -7,24 +7,21 @@ import com.microservices.store.product.exceptions.ConstraintViolationException;
 import com.microservices.store.product.exceptions.NotFoundException;
 import com.microservices.store.product.mapper.CategoryMapper;
 import com.microservices.store.product.repository.CategoryRepository;
-import com.microservices.store.product.repository.ProductRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 class CategoryServiceImpTest {
@@ -57,7 +54,7 @@ class CategoryServiceImpTest {
         verify(mapper).dtoCreateToEntity(dtoCreate);
         verify(repository).save(any(Category.class));
         verify(mapper).entityToDto(entity);
-        assertEquals(dtoService.getName(), dto.getName());
+        assertEquals(dto.getName(), dtoService.getName());
     }
     @Test
     void whenUpdateSuccess_thenDto() {
@@ -74,7 +71,7 @@ class CategoryServiceImpTest {
         verify(mapper).entityToDto(entity);
 
 
-        assertEquals(dtoService.getName(), dto.getName());
+        assertEquals(dto.getName(), dtoService.getName());
     }
 
     @Test
@@ -87,7 +84,7 @@ class CategoryServiceImpTest {
 
         verify(repository).findById(id);
         verify(mapper).entityToDto(entity);
-        assertEquals(dtoService.getName(), dto.getName());
+        assertEquals(dto.getName(), dtoService.getName());
     }
 
     @Test
@@ -132,7 +129,7 @@ class CategoryServiceImpTest {
 
         verify(repository).findById(entity.getId());
         verify(repository).hasProducts(entity.getId());
-        assertEquals(exception.getMessage(), expectMessage.getMessage());
+        assertEquals(expectMessage.getMessage(), exception.getMessage());
 
     }
 
@@ -145,7 +142,7 @@ class CategoryServiceImpTest {
         NotFoundException expectMessage = new NotFoundException("Category not found: "+idInvalid);
 
         verify(repository).findById(idInvalid);
-        assertEquals(exception.getMessage(), expectMessage.getMessage());
+        assertEquals(expectMessage.getMessage(), exception.getMessage());
 
 
     }

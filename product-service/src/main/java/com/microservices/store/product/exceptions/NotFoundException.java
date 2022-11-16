@@ -1,8 +1,5 @@
 package com.microservices.store.product.exceptions;
 
-import lombok.EqualsAndHashCode;
-
-
 public class NotFoundException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;

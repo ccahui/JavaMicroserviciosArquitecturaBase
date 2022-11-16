@@ -57,19 +57,19 @@ public class ProductRepositoryTest {
     void whenFindByCategoryA_thenListWith2Product() {
 
         List<Product> filter = repository.findByCategory(categoryA);
-        assertEquals(filter.size(), 2);
+        assertEquals(2, filter.size());
     }
     @Test
     void whenFindByCategoryB_thenListWith1Product() {
 
         List<Product> filter = repository.findByCategory(categoryB);
-        assertEquals(filter.size(), 1);
+        assertEquals(1, filter.size());
     }
     @Test
     void whenFindByCategoryC_thenListEmptyProduct() {
 
         List<Product> filter = repository.findByCategory(categoryC);
-        assertEquals(filter.size(), 0);
+        assertEquals(0, filter.size());
     }
 
     @Test
@@ -77,24 +77,25 @@ public class ProductRepositoryTest {
 
         List<Long> ids = List.of(productA.getId(), productB.getId());
         List<Product> filter = repository.findAllById(ids);
-        assertEquals(filter.size(), 2);
-        assertEquals(filter.get(0), productA);
-        assertEquals(filter.get(1), productB);
+        assertEquals(2, filter.size());
+        assertEquals(productA, filter.get(0));
+        assertEquals(productB, filter.get(1));
     }
     @Test
     void whenFindWhereArrayIdsNotValid_thenListEmpty() {
         Long idInvalid = 9999L;
         List<Long> ids = List.of(idInvalid);
         List<Product> filter = repository.findAllById(ids);
+        assertEquals(0, filter.size());
     }
     @Test
     void whenFindWhereArray2ValidAnd1IdsInvalid_thenList2Element() {
         Long idInvalid = 9999L;
         List<Long> ids = List.of(productA.getId(), productB.getId(), idInvalid);
         List<Product> filter = repository.findAllById(ids);
-        assertEquals(filter.size(), 2);
-        assertEquals(filter.get(0), productA);
-        assertEquals(filter.get(1), productB);
+        assertEquals(2, filter.size());
+        assertEquals(productA, filter.get(0));
+        assertEquals(productB, filter.get(1));
     }
 
     @Test

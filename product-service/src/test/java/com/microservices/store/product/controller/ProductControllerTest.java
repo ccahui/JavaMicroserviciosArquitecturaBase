@@ -1,7 +1,6 @@
 package com.microservices.store.product.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.microservices.store.product.dto.CategoryCreateDto;
 import com.microservices.store.product.dto.ProductCreateDto;
 import com.microservices.store.product.entity.Category;
 import com.microservices.store.product.entity.Product;
@@ -22,12 +21,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
@@ -63,10 +62,6 @@ class ProductControllerTest {
     }
 
     @Test
-    void all() {
-    }
-
-    @Test
     void testShowIsInStockSuccess() throws Exception {
         List<String> idsValid = List.of(productA.getId().toString(), productB.getId().toString());
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
@@ -87,13 +82,4 @@ class ProductControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
-
-    @Test
-    void update() {
-    }
-
-    @Test
-    void delete() {
-
-    }
 }

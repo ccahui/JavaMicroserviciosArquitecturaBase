@@ -37,8 +37,8 @@ public class InitData implements CommandLineRunner {
 
         productRepository.saveAll(List.of(productA, productB, productC));
 
-        log.info("Categorias Creadas "+categoryRepository.findAll());
-        log.info("Productos Creados "+productRepository.findAll());
+        log.info("Categorias Creadas {}",categoryRepository.findAll());
+        log.info("Productos Creados {}", productRepository.findAll());
 
     }
 

@@ -3,7 +3,6 @@ package com.microservices.store.product.service;
 
 import com.microservices.store.product.dto.CategoryCreateDto;
 import com.microservices.store.product.dto.CategoryDto;
-import com.microservices.store.product.entity.Category;
 
 import java.util.List;
 

@@ -21,12 +21,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
@@ -70,14 +67,6 @@ class CategoryControllerTest {
     }
 
     @Test
-    void all() {
-    }
-
-    @Test
-    void show() {
-    }
-
-    @Test
     void testCreateSuccess() throws Exception{
         CategoryCreateDto dtoCreation = new CategoryCreateDto("Category A");
         this.mockMvc.perform(post(PATH).contentType(MediaType.APPLICATION_JSON)
@@ -100,11 +89,6 @@ class CategoryControllerTest {
                 .andExpect(jsonPath("$.fieldsError[0].name").value("name"))
                 .andExpect(jsonPath("$.fieldsError[0].message").value("must not be blank"));
 
-    }
-
-
-    @Test
-    void update() {
     }
 
     @Test
