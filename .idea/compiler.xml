@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="api-gateway" />
         <module name="product-service" />
+        <module name="config-server" />
         <module name="discovery-server" />
         <module name="shopping-service" />
         <module name="customer-service" />
@@ -21,6 +22,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="api-gateway" options="-parameters" />
+      <module name="config-server" options="-parameters" />
       <module name="customer-service" options="-parameters" />
       <module name="dicovery-service" options="-parameters" />
       <module name="discovery-server" options="-parameters" />
