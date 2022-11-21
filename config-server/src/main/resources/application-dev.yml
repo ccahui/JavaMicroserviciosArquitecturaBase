@@ -2,4 +2,10 @@ server:
   port: 8888
 spring:
   application:
-    name: conifg-server
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/ccahui/JavaMicroserviciosArquitecturaBase.git
+          searchPaths: config-data-properties
