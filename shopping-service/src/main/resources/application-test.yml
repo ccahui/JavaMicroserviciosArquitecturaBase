@@ -13,3 +13,6 @@ spring:
         dialect: org.hibernate.dialect.H2Dialect
     database-platform: org.hibernate.dialect.H2Dialect
     show-sql: 'true'
+  cloud:
+    discovery:
+      enabled: false
