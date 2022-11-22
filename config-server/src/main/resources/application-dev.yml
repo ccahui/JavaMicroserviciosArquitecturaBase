@@ -9,3 +9,4 @@ spring:
         git:
           uri: https://github.com/ccahui/JavaMicroserviciosArquitecturaBase.git
           searchPaths: config-data-properties
+          default-label: "main"
