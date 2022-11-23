@@ -5,7 +5,7 @@ services:
     build:
       context: ./product-service
       dockerfile: Dockerfile
-    image: product-service-app:0.2
+    image: product-service-app:1.0
     ports:
       - 8091:8091
     depends_on:
@@ -15,7 +15,7 @@ services:
     build:
       context: ./customer-service
       dockerfile: Dockerfile
-    image: customer-service-app:0.3
+    image: customer-service-app:1.0
     ports:
       - 8092:8092
     depends_on:
@@ -25,31 +25,35 @@ services:
     build:
       context: ./shopping-service
       dockerfile: Dockerfile
-    image: shopping-service-app:0.2
+    image: shopping-service-app:1.0
     ports:
       - 8093:8093
     depends_on:
+      - config-server
       - discovery-server
   discovery-server:
     build:
       context: ./discovery-server
       dockerfile: Dockerfile
-    image: discovery-server-app:0.1
+    image: discovery-server-app:1.0
     ports:
       - 8761:8761
+    depends_on:
+      - config-server
   api-gateway:
     build:
       context: ./api-gateway
       dockerfile: Dockerfile
-    image: api-gateway-app:0.1
+    image: api-gateway-app:1.0
     ports:
       - 8080:8080
     depends_on:
+      - config-server
       - discovery-server
   config-server:
     build:
       context: ./config-server
       dockerfile: Dockerfile
-    image: config-server-app:0.4
+    image: config-server-app:1.0
     ports:
       - 8888:8888
