@@ -1,5 +1,7 @@
+data:
+  perfil: shopping-service-docker
 server:
-  port: 8093
+  port: 8092
 spring:
   application:
     name: shopping-service
