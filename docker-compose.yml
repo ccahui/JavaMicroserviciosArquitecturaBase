@@ -20,6 +20,16 @@ services:
     depends_on:
       - config-server
       - discovery-server
+  shopping-service:
+    build:
+      context: ./shopping-service
+      dockerfile: Dockerfile
+    image: shopping-service-app:60.0
+    ports:
+      - 8093:8093
+    depends_on:
+      - config-server
+      - discovery-server
   discovery-server:
     build:
       context: ./discovery-server
