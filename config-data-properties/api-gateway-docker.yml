@@ -36,6 +36,8 @@ spring:
           filters:
             - StripPrefix=1
 eureka:
+  instance:
+    hostname: discovery-server
   client:
     serviceUrl:
       defaultZone: http://eureka_user:eureka_password@discovery-server:8761/eureka
