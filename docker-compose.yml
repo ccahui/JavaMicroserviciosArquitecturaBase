@@ -4,7 +4,7 @@ services:
     build:
       context: ./product-service
       dockerfile: Dockerfile
-    image: product-service-app:1.0
+    image: product-service-app:10.0
     ports:
       - 8091:8091
     depends_on:
@@ -14,7 +14,7 @@ services:
     build:
       context: ./discovery-server
       dockerfile: Dockerfile
-    image: discovery-server-app:1.0
+    image: discovery-server-app:10.0
     ports:
       - 8761:8761
     depends_on:
@@ -23,7 +23,7 @@ services:
     build:
       context: ./api-gateway
       dockerfile: Dockerfile
-    image: api-gateway-app:1.0
+    image: api-gateway-app:10.0
     ports:
       - 8080:8080
     depends_on:

@@ -15,7 +15,3 @@ spring:
         dialect: org.hibernate.dialect.H2Dialect
     database-platform: org.hibernate.dialect.H2Dialect
     show-sql: 'true'
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://eureka_user:eureka_password@discovery-server:8761/eureka
