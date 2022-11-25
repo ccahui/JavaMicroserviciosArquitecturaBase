@@ -43,7 +43,7 @@ services:
     build:
       context: ./api-gateway
       dockerfile: Dockerfile
-    image: api-gateway-app:40.0
+    image: api-gateway-app:50.0
     ports:
       - 8080:8080
     depends_on:
