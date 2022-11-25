@@ -32,7 +32,9 @@ spring:
             - Path=/app-shopping/**
           filters:
             - StripPrefix=1
-
+eureka:
+  instance:
+    hostname: localhost
   client:
     serviceUrl:
       defaultZone: http://eureka_user:eureka_password@localhost:8761/eureka
