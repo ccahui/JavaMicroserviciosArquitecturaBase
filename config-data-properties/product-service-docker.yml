@@ -1,3 +1,5 @@
+data:
+  perfil: product-service-docker
 server:
   port: 8091
 spring:
