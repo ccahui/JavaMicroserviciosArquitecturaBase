@@ -10,6 +10,16 @@ services:
     depends_on:
       - config-server
       - discovery-server
+  customer-service:
+    build:
+      context: ./customer-service
+      dockerfile: Dockerfile
+    image: customer-service-app:30.0
+    ports:
+      - 8092:8092
+    depends_on:
+      - config-server
+      - discovery-server
   discovery-server:
     build:
       context: ./discovery-server
