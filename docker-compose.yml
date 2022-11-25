@@ -34,7 +34,7 @@ services:
     build:
       context: ./discovery-server
       dockerfile: Dockerfile
-    image: discovery-server-app:20.0
+    image: discovery-server-app:50.0
     ports:
       - 8761:8761
     depends_on:

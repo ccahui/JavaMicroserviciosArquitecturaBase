@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
-@EnableEurekaClient
-@EnableDiscoveryClient
+@EnableEurekaServer
 @RestController
 public class DiscoveryServerApplication {
 	@Value("${data.perfil}")

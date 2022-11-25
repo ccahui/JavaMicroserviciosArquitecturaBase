@@ -11,7 +11,7 @@ RUN mvn -f pom.xml clean package install
 
 FROM ${RUNTIME_IMAGE}
 ENV ARTIFACT_NAME=*.jar
-ENV PROFILE=dev
+ENV PROFILE=docker
 
 EXPOSE 8761
 
