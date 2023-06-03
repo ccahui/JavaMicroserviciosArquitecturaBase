@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableEurekaServer
 @RestController
 public class DiscoveryServerApplication {
-	@Value("${data.perfil}")
+	@Value("${data.name-profile}")
 	private String value;
 	public static void main(String[] args) {
 		SpringApplication.run(DiscoveryServerApplication.class, args);

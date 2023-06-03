@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableDiscoveryClient
 @RestController
 public class CustomerServiceApplication {
-	@Value("${data.perfil}")
+	@Value("${data.name-profile}")
 	private String value;
 	public static void main(String[] args) {
 		SpringApplication.run(CustomerServiceApplication.class, args);

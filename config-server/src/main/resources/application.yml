@@ -3,10 +3,10 @@ server:
 spring:
   application:
     name: config-server
+  profiles:
+    active: native
   cloud:
     config:
       server:
-        git:
-          uri: https://github.com/ccahui/JavaMicroserviciosArquitecturaBase.git
-          searchPaths: config-data-properties
-          default-label: "main"
+        native:
+          search-locations: classpath:/config/
