@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableDiscoveryClient
 @RestController
 public class ApiGatewayApplication {
-	@Value("${data.perfil}")
+	@Value("${data.name-profile}")
 	private String value;
 	public static void main(String[] args) {
 		SpringApplication.run(ApiGatewayApplication.class, args);

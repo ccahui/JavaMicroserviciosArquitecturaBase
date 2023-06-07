@@ -1,5 +1,5 @@
 data:
-  perfil: shopping-service-test
+  name-profile: shopping-service-test
 spring:
   datasource:
     username: sa
@@ -19,4 +19,4 @@ spring:
   application:
     name: product-service
   server:
-    port: '8091'
+    port: '9093'

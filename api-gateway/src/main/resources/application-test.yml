@@ -1,5 +1,5 @@
 data:
-  perfil: api-gateway
+  name-profile: api-gateway-local
 spring:
   datasource:
     username: sa

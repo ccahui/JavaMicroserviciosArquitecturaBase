@@ -1,10 +1,8 @@
 data:
-  perfil: api-gateway-docker
+  name-profile: gateway-local-config
 server:
   port: 8080
 spring:
-  application:
-    name: api-gateway
   cloud:
     gateway:
       discovery:

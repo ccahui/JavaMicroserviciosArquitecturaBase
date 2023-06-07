@@ -20,6 +20,16 @@ services:
     depends_on:
       - config-server
       - discovery-server
+  shopping-service:
+    build:
+      context: ./shopping-service
+      dockerfile: Dockerfile
+    image: shopping-service-app:1.0
+    ports:
+      - 8093:8093
+    depends_on:
+      - config-server
+      - discovery-server
   discovery-server:
     build:
       context: ./discovery-server
@@ -29,6 +39,16 @@ services:
       - 8761:8761
     depends_on:
       - config-server
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    image: api-gateway-app:1.0
+    ports:
+      - 8080:8080
+    depends_on:
+      - config-server
+      - discovery-server
   config-server:
     build:
       context: ./config-server

@@ -1,10 +1,8 @@
 data:
-  perfil: api-gateway
+  name-profile: gateway-local-config
 server:
   port: 8080
 spring:
-  application:
-    name: api-gateway
   cloud:
     gateway:
       discovery:
@@ -12,21 +10,21 @@ spring:
           enabled: true
       routes:
         - id: customer-service
-          #uri: http://localhost:8092
+          #uri: http://localhost:9092
           uri: lb://customer-service
           predicates:
-          - Path=/app-customer/**
+            - Path=/app-customer/**
           filters:
-          - StripPrefix=1
+            - StripPrefix=1
         - id: product-service
-          #uri: http://localhost:8091
+          #uri: http://localhost:9091
           uri: lb://product-service
           predicates:
             - Path=/app-product/**
           filters:
             - StripPrefix=1
         - id: shopping-service
-          #uri: http://localhost:8093
+          #uri: http://localhost:9093
           uri: lb://shopping-service
           predicates:
             - Path=/app-shopping/**
