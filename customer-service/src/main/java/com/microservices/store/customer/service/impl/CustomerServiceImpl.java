@@ -4,6 +4,7 @@ import com.microservices.store.customer.entity.Customer;
 import com.microservices.store.customer.exceptions.NotFoundException;
 import com.microservices.store.customer.repository.CustomerRepository;
 import com.microservices.store.customer.service.CustomerService;
+import com.microservices.store.customer.utils.CopyProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ public class CustomerServiceImpl  implements CustomerService {
 
 
     private final CustomerRepository customerRepository;
+    private final CopyProperties copyProperties;
 
     @Override
     public List<Customer> all() {
@@ -36,11 +38,7 @@ public class CustomerServiceImpl  implements CustomerService {
         if (customerDB == null){
             return  null;
         }
-        customerDB.setFirstName(customer.getFirstName());
-        customerDB.setLastName(customer.getLastName());
-        customerDB.setEmail(customer.getEmail());
-        customerDB.setPhotoUrl(customer.getPhotoUrl());
-
+        copyProperties.copyPropertiesWithoutNull(customer, customerDB);
         return  customerRepository.save(customerDB);
     }
 

@@ -19,8 +19,7 @@ import org.springframework.util.MimeTypeUtils;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
@@ -42,8 +41,8 @@ class CustomerControllerTest {
 
     @BeforeEach
     void setInsertData(){
-        dto = new Customer().builder().firstName("Juan").lastName("Paredes").email("paredes@gmail.com").build();
-        entity = Customer.builder().firstName("Jose").lastName("Laura").email("jose@gmail.com").build();
+        dto = new Customer().builder().firstName("Juan").lastName("Paredes").email("paredes@gmail.com").photoUrl("dtoPhoto").build();
+        entity = Customer.builder().firstName("Jose").lastName("Laura").email("jose@gmail.com").photoUrl("entityPhoto").build();
 
         repository.save(entity);
     }
@@ -82,6 +81,18 @@ class CustomerControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
         assertEquals(2, repository.count());
+    }
+
+    @Test
+    void shouldUpdateSuccessfully() throws Exception {
+        String id = "/"+entity.getId();
+        this.mockMvc.perform(put(PATH+id).contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(dto)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.photoUrl").value(dto.getPhotoUrl()));
+
+        assertEquals(1, repository.count());
     }
 
     @Test

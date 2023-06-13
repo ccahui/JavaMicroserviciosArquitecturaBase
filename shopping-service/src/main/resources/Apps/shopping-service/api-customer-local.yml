@@ -1,0 +1,3 @@
+api-customer:
+  connectTimeout: 3000
+  socketTimeout: 10000

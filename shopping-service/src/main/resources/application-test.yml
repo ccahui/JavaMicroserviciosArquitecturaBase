@@ -17,6 +17,8 @@ spring:
     discovery:
       enabled: 'false'
   application:
-    name: product-service
+    name: shopping-service
   server:
     port: '9093'
+  system:
+    active: classpath:Apps

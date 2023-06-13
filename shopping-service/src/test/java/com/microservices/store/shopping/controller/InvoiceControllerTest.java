@@ -1,6 +1,11 @@
 package com.microservices.store.shopping.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.microservices.store.shopping.client.CustomerClient;
+import com.microservices.store.shopping.client.ProductClient;
+import com.microservices.store.shopping.client.dto.CustomerDto;
+import com.microservices.store.shopping.client.dto.InventoryDto;
+import com.microservices.store.shopping.client.dto.ProductDto;
 import com.microservices.store.shopping.config.InitData;
 import com.microservices.store.shopping.entity.Invoice;
 import com.microservices.store.shopping.entity.InvoiceItem;
@@ -13,6 +18,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Profile;
@@ -22,12 +28,15 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
@@ -49,6 +58,11 @@ class InvoiceControllerTest {
     private Invoice dto;
     private Invoice entity;
 
+    @MockBean
+    private CustomerClient customerClient;
+
+    @MockBean
+    private ProductClient productClient;
     @BeforeEach
     void setInsertData(){
 
@@ -79,13 +93,25 @@ class InvoiceControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
-   /* @Test
+   @Test
     void shouldSuccesShow() throws Exception{
-        Long idValid = entity.getId();
+
+       Long idValid = entity.getId();
+
+       // Set up mock responses for customerClient
+       CustomerDto customerDto = new CustomerDto();
+       // Set up the desired behavior of the customerClient mock
+       when(customerClient.show(idValid, "token")).thenReturn(customerDto);
+
+       // Set up mock responses for productClient
+       List<ProductDto> products = new ArrayList<>();
+       // Set up the desired behavior of the productClient mock
+       when(productClient.findAll(anyList())).thenReturn(products);
+
         this.mockMvc.perform(get(PATH+"/{id}", idValid))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-    }*/
+    }
     @Test
     void shouldErrorShowIdInvalid() throws Exception{
         Long idInvalid = 9999L;
@@ -93,9 +119,17 @@ class InvoiceControllerTest {
                 .andExpect(status().is5xxServerError())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
-    /*
+
     @Test
     void shouldSaveSuccessfully() throws Exception {
+        List<Long> productIds = Arrays.asList(1L, 1L);
+        List<InventoryDto> inventoryDtos = Arrays.asList(
+                new InventoryDto(1L, true, 5.0),
+                new InventoryDto(1L, true, 10.0)
+        );
+        when(productClient.isInStock(productIds)).thenReturn(inventoryDtos);
+
+
         this.mockMvc.perform(post(PATH).contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(dto)))
                 .andExpect(status().isCreated())
@@ -103,17 +137,33 @@ class InvoiceControllerTest {
 
         assertEquals(2, repository.count());
         assertEquals(3, repositoryItem.count());
-    }*/
+    }
+
+    @Test
+    void shouldSaveNotStockSuccessfully() throws Exception {
+        List<Long> productIds = Arrays.asList(1L, 1L);
+        List<InventoryDto> inventoryDtos = Arrays.asList(
+                new InventoryDto(1L, false, 5.0),
+                new InventoryDto(1L, true, 10.0)
+        );
+        when(productClient.isInStock(productIds)).thenReturn(inventoryDtos);
+
+
+        this.mockMvc.perform(post(PATH).contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(dto)))
+                .andExpect(status().is5xxServerError())
+                .andExpect(jsonPath("$.message").value("Product is not in stock. Not Stock. Please try again later"));
+    }
 
     @Test
     void shouldUpdateSuccessfully() throws Exception {
-        System.out.println("HOLA: "+ repositoryItem.findAll());
+
         Long idValid = entity.getId();
         this.mockMvc.perform(put(PATH+"/{id}", idValid).contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(dto)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-        System.out.println("HOLA 2: "+ repositoryItem.findAll());
+
         assertEquals(1, repository.count());
         assertEquals(2, repositoryItem.count());
     }

@@ -83,7 +83,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         Invoice invoice = invoiceRepository.findById(id).orElseThrow(() -> new NotFoundException("Invoice not Found " + id));
         List<Long> idsProduct = invoice.getItems().stream().map(e -> e.getProductId()).collect(Collectors.toList());
 
-        CustomerDto customer = customerClient.show(invoice.getCustomerId());
+        CustomerDto customer = customerClient.show(invoice.getCustomerId(), "token");
         List<ProductDto> products = productClient.findAll(idsProduct);
 
         invoice.setCustomer(customer);
