@@ -1,5 +1,6 @@
 package com.microservices.store.product.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microservices.store.product.dto.CategoryCreateDto;
 import com.microservices.store.product.dto.ProductCreateDto;
@@ -10,6 +11,7 @@ import com.microservices.store.product.repository.ProductRepository;
 import com.microservices.store.product.utils.Status;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +28,8 @@ import org.springframework.util.MultiValueMap;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
@@ -64,7 +66,10 @@ class ProductControllerTest {
     }
 
     @Test
-    void all() {
+    void all() throws Exception {
+        this.mockMvc.perform(get(PATH))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test
@@ -81,20 +86,41 @@ class ProductControllerTest {
     @Test
     void testCreateSuccess() throws Exception{
         Long categoryId = categoryA.getId();
-        ProductCreateDto dtoCreation = new ProductCreateDto().builder().name("Producto A").categoryId(categoryId).build();
+        ProductCreateDto dtoCreation = new ProductCreateDto().builder().name("Product A").price(25D).stock(10D).categoryId(categoryId).build();
         this.mockMvc.perform(post(PATH).contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(dtoCreation)))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+
+        assertEquals(3, repositoryProduct.count());
     }
 
 
     @Test
-    void update() {
+    void update() throws Exception {
+        Long categoryId = categoryA.getId();
+        ProductCreateDto dtoCreation = new ProductCreateDto().builder().name("Producto UPDATE A").categoryId(categoryId).build();
+
+        String id = "/"+productA.getId();
+        this.mockMvc.perform(put(PATH+id).contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(dtoCreation)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.name").value(dtoCreation.getName()));
+
+        assertEquals(2, repositoryProduct.count());
     }
 
     @Test
-    void delete() {
+    void deleteSuccess() throws Exception{
+        Long idValid = productA.getId();
+        this.mockMvc.perform(delete(PATH+"/{id}", idValid)).andExpect(status().isNoContent());
+        assertEquals(1, repositoryProduct.count());
+    }
+    @Test
+    void deleteErrorIdInvalid() throws Exception{
+        Long idInvalid = 99999L;
+        this.mockMvc.perform(delete(PATH+"/{id}", idInvalid)).andExpect(status().is5xxServerError());
 
     }
 }

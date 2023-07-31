@@ -28,7 +28,6 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 
     private final InvoiceRepository invoiceRepository;
-    private final InvoiceItemsRepository invoiceItemsRepository;
     private final ProductClient productClient;
     private final CustomerClient customerClient;
 

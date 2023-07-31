@@ -1,5 +1,6 @@
 package com.microservices.store.product.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microservices.store.product.dto.CategoryCreateDto;
 import com.microservices.store.product.entity.Category;
@@ -23,8 +24,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -71,11 +71,20 @@ class CategoryControllerTest {
     }
 
     @Test
-    void all() {
+    void all() throws Exception {
+        this.mockMvc.perform(get(PATH))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+
     }
 
     @Test
-    void show() {
+    void show() throws Exception {
+        Long idValid = categoriaWithProducts.getId();
+        this.mockMvc.perform(get(PATH+"/{id}", idValid))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.name").value(categoriaWithProducts.getName()));
     }
 
     @Test
@@ -85,6 +94,8 @@ class CategoryControllerTest {
                         .content(mapper.writeValueAsString(dtoCreation)))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+
+        assertEquals(3, repositoryCategory.count());
     }
     @Test
     void testCreateBadRequestNameIsBlank() throws Exception{
@@ -105,7 +116,16 @@ class CategoryControllerTest {
 
 
     @Test
-    void update() {
+    void update() throws Exception {
+        CategoryCreateDto dtoCreation = new CategoryCreateDto("Category UPDATE A");
+        String id = "/"+categoriaWithProducts.getId();
+        this.mockMvc.perform(put(PATH+id).contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(dtoCreation)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.name").value(dtoCreation.getName()));
+
+        assertEquals(2, repository.count());
     }
 
     @Test

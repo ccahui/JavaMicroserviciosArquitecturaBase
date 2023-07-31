@@ -30,7 +30,7 @@ class ProductMapperTest {
                 .id(1L)
                 .name("Categoria A")
                 .description("Descripcion")
-                .category(new Category().builder().id(1L).build())
+                .category(new Category().builder().id(2L).build())
                 .createAt(new Date())
                 .build();
         ProductDto dto = mapper.entityToDto(entity);
@@ -69,13 +69,12 @@ class ProductMapperTest {
                 .build();
         Product entity = mapper.dtoCreateToEntity(dto);
 
-
+        assertNull(entity.getId());
+        assertNull(entity.getCategory());
         assertEquals(entity.getName(), dto.getName());
         assertEquals(entity.getDescription(), dto.getDescription());
         assertEquals(entity.getPrice(), dto.getPrice());
         assertEquals(entity.getStock(), dto.getStock());
-        assertEquals(entity.getCategory().getId(), dto.getCategoryId());
-
 
     }
 }

@@ -9,6 +9,7 @@ import com.microservices.store.product.exceptions.NotFoundException;
 import com.microservices.store.product.mapper.ProductMapper;
 import com.microservices.store.product.repository.ProductRepository;
 import com.microservices.store.product.service.ProductService;
+import com.microservices.store.product.utils.CopyProperties;
 import com.microservices.store.product.utils.Status;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,11 +23,13 @@ public class ProductServiceImp implements ProductService {
 
     private final ProductRepository repository;
     private final ProductMapper mapper;
+    private final CopyProperties copyProperties;
 
     @Override
     public ProductDto save(ProductCreateDto productCreateDto) {
         Product product = mapper.dtoCreateToEntity(productCreateDto);
         product.setStatus(Status.CREATED);
+        product.setCategory(new Category().builder().id(productCreateDto.getCategoryId()).build());
         ProductDto dto = mapper.entityToDto(repository.save(product));
         return dto;
     }
@@ -61,8 +64,7 @@ public class ProductServiceImp implements ProductService {
     @Override
     public ProductDto update(Long id, ProductCreateDto productCreateDto) {
         Product product = repository.findById(id).orElseThrow(() -> new NotFoundException("Product id (" + id + ")"));
-        product.setName(productCreateDto.getName());
-        product.setStock(productCreateDto.getStock());
+        copyProperties.copyPropertiesWithoutNull(productCreateDto, product);
         product.setCategory(new Category().builder().id(productCreateDto.getCategoryId()).build());
         repository.save(product);
         ProductDto dto = mapper.entityToDto(product);

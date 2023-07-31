@@ -7,8 +7,8 @@ import com.microservices.store.product.exceptions.ConstraintViolationException;
 import com.microservices.store.product.exceptions.NotFoundException;
 import com.microservices.store.product.mapper.CategoryMapper;
 import com.microservices.store.product.repository.CategoryRepository;
-import com.microservices.store.product.repository.ProductRepository;
 import com.microservices.store.product.service.CategoryService;
+import com.microservices.store.product.utils.CopyProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
 public class CategoryServiceImp implements CategoryService {
 
     private final CategoryRepository repository;
-    private final ProductRepository repositoryProduct;
     private final CategoryMapper mapper;
+    private final CopyProperties copyProperties;
 
     @Override
     public CategoryDto save(CategoryCreateDto categoryCreateDto) {
@@ -47,7 +47,7 @@ public class CategoryServiceImp implements CategoryService {
     @Override
     public CategoryDto update(Long id, CategoryCreateDto categoryCreateDto) {
         Category category = repository.findById(id).orElseThrow(() -> new NotFoundException("Category id (" + id + ")"));
-        category.setName(categoryCreateDto.getName());
+        copyProperties.copyPropertiesWithoutNull(categoryCreateDto, category);
         repository.save(category);
         CategoryDto dto = mapper.entityToDto(category);
         return dto;

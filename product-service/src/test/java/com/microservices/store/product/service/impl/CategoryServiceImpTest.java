@@ -8,6 +8,7 @@ import com.microservices.store.product.exceptions.NotFoundException;
 import com.microservices.store.product.mapper.CategoryMapper;
 import com.microservices.store.product.repository.CategoryRepository;
 import com.microservices.store.product.repository.ProductRepository;
+import com.microservices.store.product.utils.CopyProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,6 +33,8 @@ class CategoryServiceImpTest {
     private CategoryRepository repository;
     @Mock
     private CategoryMapper mapper;
+    @Mock
+    private CopyProperties copyProperties;
     @InjectMocks
     private CategoryServiceImp service;
 
@@ -67,6 +70,9 @@ class CategoryServiceImpTest {
         when(repository.findById(id)).thenReturn(Optional.of(entity));
         when(mapper.entityToDto(entity)).thenReturn(dto);
         when(repository.save(any(Category.class))).thenReturn(entity);
+
+        doNothing().when(copyProperties).copyPropertiesWithoutNull(dtoCreate, entity);
+
         CategoryDto dtoService = service.update(entity.getId(), dtoCreate);
 
 

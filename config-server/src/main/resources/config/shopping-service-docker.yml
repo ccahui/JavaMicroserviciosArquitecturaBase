@@ -1,5 +1,8 @@
 data:
   name-profile: shopping-docker-config
+spring:
+  system:
+    active: classpath:Apps
 server:
   port: 8093
   datasource:

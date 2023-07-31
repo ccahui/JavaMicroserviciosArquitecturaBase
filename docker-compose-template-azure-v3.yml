@@ -1,0 +1,30 @@
+version: '3.7'
+services:
+  product-service:
+    image: arquitecturabase.azurecr.io/product-service-app:1.0
+    depends_on:
+      - config-server
+      - discovery-server
+  customer-service:
+    image: arquitecturabase.azurecr.io/customer-service-app:1.0
+    depends_on:
+      - config-server
+      - discovery-server
+  shopping-service:
+    image: arquitecturabase.azurecr.io/shopping-service-app:1.0
+    depends_on:
+      - config-server
+      - discovery-server
+  discovery-server:
+    image: arquitecturabase.azurecr.io/discovery-server-app:1.0
+    depends_on:
+      - config-server
+  api-gateway:
+    image: arquitecturabase.azurecr.io/api-gateway-app:1.0
+    ports:
+      - 80:8080
+    depends_on:
+      - config-server
+      - discovery-server
+  config-server:
+    image: arquitecturabase.azurecr.io/config-server-app:1.0
